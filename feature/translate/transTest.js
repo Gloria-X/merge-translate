@@ -10,20 +10,39 @@ const translator = require("./xunfei_translator");
 //   });
 
 // n 条请求，其中一条出错 怎么去做兼容处理。方向： que retry
+function flattenObject(obj) {
+  const toReturn = {};
 
-const cn = require("./cn");
+  for (const i in obj) {
+    if (!obj.hasOwnProperty(i)) continue;
 
-async function trans() {
+    if (typeof obj[i] == "object" && obj[i] !== null) {
+      const flatObject = flattenObject(obj[i]);
+      for (const x in flatObject) {
+        if (!flatObject.hasOwnProperty(x)) continue;
+
+        toReturn[i + "." + x] = flatObject[x];
+      }
+    } else {
+      toReturn[i] = obj[i];
+    }
+  }
+  return toReturn;
+}
+
+const cn = flattenObject(require("./../../input/cn.js"));
+
+let allLangs = { cn: {} };
+
+async function trans(allLangs, text, from, to) {
   const res = {};
   const errKey = [];
-  const arr = Object.entries(cn);
-
-  console.log(11111, arr);
+  const arr = Object.entries(text);
 
   for (let i = 0; i < arr.length; i++) {
     const [key, value] = arr[i];
     try {
-      const result = await translator(value, "cn", "en");
+      const result = await translator(value, from, to);
       res[key] = result.trans_result.dst;
     } catch (error) {
       errKey.push(arr[i]);
@@ -31,6 +50,8 @@ async function trans() {
   }
   console.log("翻译完成结果==> ", res);
   console.log("失败数据 ===>", errKey);
+  allLangs[to] = res;
+  console.log(allLangs);
 }
 
 // function trans(obj, from, to) {
@@ -65,7 +86,7 @@ async function trans() {
 //   }
 // }
 
-trans(cn, "cn", "en");
+trans(allLangs, cn, "cn", "en");
 
 // for (const key in cn) {
 //   const trans = {};
