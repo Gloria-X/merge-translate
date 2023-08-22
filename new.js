@@ -10,7 +10,7 @@ var ws = wb.addWorksheet("Sheet1", {
 //将数据源添加到sheet页中
 
 ws.addRows(data);
-
+FindOnePassengerRequestDTO;
 //设置默认单元格样式
 
 var style = {

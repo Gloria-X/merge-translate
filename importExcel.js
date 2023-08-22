@@ -19,7 +19,7 @@ const allLangs = {};
 const [header, ...data] = dataRes;
 const langs = header.filter((t, i) => i > 0);
 
-// console.log(langs);
+console.log(xlsxData);
 
 langs.forEach((t, i) => {
   const _i = i + 1;
@@ -33,7 +33,7 @@ langs.forEach((t, i) => {
 
 // console.log(data);
 
-// console.log(allLangs);
+console.log(1111, allLangs);
 
 const res = {};
 for (const key in allLangs) {
@@ -48,8 +48,8 @@ for (const key in allLangs) {
 
   const sourceJson = `export default ${JSON.stringify(source)};`;
   const path = `./input/new-${key}.js`;
-
   fs.writeFileSync(path, sourceJson, "utf-8");
+  console.log(2222222, source);
 }
 
 // console.log(111, res);
