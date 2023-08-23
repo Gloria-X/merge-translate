@@ -25,7 +25,8 @@ function flattenObject(obj) {
 
 // name => ./[xxxx].js 永远是这种格式，方便取name
 function getFileName(name) {
-  const reg = /\.\/(.*?)\.js$/;
+  // const reg = /\.\/(.*?)\.js$/;
+  const reg = /\/([^/]+)\.js$/;
   reg.test(name);
   return RegExp.$1;
 }
@@ -122,7 +123,7 @@ function genarate(arr) {
 
 genarate([
   {
-    langs: ["./cn.js", "./us.js"],
+    langs: ["./../../input/cn.js", "./../../input/us.js"],
     excel: "./output/i18n（用户侧）.xlsx",
   },
 ]);

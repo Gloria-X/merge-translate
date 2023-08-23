@@ -23,9 +23,10 @@ function flattenObject(obj) {
   return toReturn;
 }
 
-// name => ./[xxxx].js 永远是这种格式，方便取name
+// name => ../../input/[xxxx].js 永远是这种格式，方便取name
 function getFileName(name) {
-  const reg = /\.\/(.*?)\.js$/;
+  // const reg = /\.\/(.*?)\.js$/;
+  const reg = /\/([^/]+)\.js$/;
   reg.test(name);
   return RegExp.$1;
 }
@@ -45,10 +46,9 @@ async function trans(allLangs, text, from, to) {
       console.log(error);
     }
   }
-  // console.log("翻译完成结果==> ", res);
-  // console.log("失败数据 ===>", errKey);
+  console.log("翻译完成结果==> ", res);
+  console.log("失败数据 ===>", errKey);
   allLangs[to] = res;
-  // console.log(allLangs);
 }
 
 // 确定了columns 和第一列 key
@@ -62,26 +62,19 @@ function set(config) {
     const cur = require(t); // 文件内容 kv对象
     const obj = flattenObject(cur); // 打平后的kv对象
     const name = getFileName(t); // 文件名称 用来当列头名字 cn us jp
+    // 默认用首个文件的key
+    if (keys.length === 0) {
+      keys.push(...Object.keys(obj)); // [k1, k2, k3, ...]
+    }
 
     allLangs[name] = obj; // obj打平后
-    // allLangs = {
-    //  cn: (obj1)
-    //   {
-    //    'xxx'.'xx':'kkkk'
-    //  },
-    //  us:{...}
-    // }
 
     await trans(allLangs, allLangs[name], "cn", "en");
 
-    pushHeaders.push({ header: Object.keys(allLangs), width: 35 });
-
-    // 默认用首个文件的key
-    if (keys.length === 0) {
-      keys.push(...Object.keys(allLangs)); // [k1, k2, k3, ...]
+    // 第一列为key，第二列开始列名从allLangs中取
+    for (let i = 0; i < Object.keys(allLangs).length; i++) {
+      pushHeaders.push({ header: Object.keys(allLangs)[i], width: 35 });
     }
-
-    // console.log(allLangs);
 
     // 获取数据
     const result = keys.map((t) => [t]);
@@ -89,7 +82,6 @@ function set(config) {
     pushHeaders.forEach((t) => {
       // 之前 pushHeaders = [{cn}, {us}, ...]
       const data = allLangs[t.header]; // 找对应列
-
       // t.header = cn
       // {
       //   'ax'.'b':'kkk'
