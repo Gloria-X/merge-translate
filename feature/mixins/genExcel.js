@@ -113,4 +113,4 @@ function gen(langs) {
   }
   workbook.xlsx.writeFile("./output/i18n（用户侧）.xlsx");
 }
-module.exports = gen;
+module.exports = { gen };

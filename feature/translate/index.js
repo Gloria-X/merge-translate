@@ -120,4 +120,4 @@ async function translate(lang, from, to, tranlateConfig) {
   }
   workbook.xlsx.writeFile("./output/transRes.xlsx");
 }
-module.exports = translate;
+module.exports = { translate };
