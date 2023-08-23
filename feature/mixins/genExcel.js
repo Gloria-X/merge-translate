@@ -41,8 +41,7 @@ function plus(og, newOg) {
   return ogPlus;
 }
 
-function set(config) {
-  const { langs, excel } = config;
+function set(langs) {
   const keys = []; // 基准key
   const headers = [{ header: "key", width: 35 }]; // 第一行第一列（固定）
   const pushHeaders = []; // 第一行其余列（不确定）
@@ -112,18 +111,20 @@ function set(config) {
       bgColor: { argb: "FF0000FF" },
     };
   }
-  workbook.xlsx.writeFile(excel);
+  workbook.xlsx.writeFile("./output/i18n（用户侧）.xlsx");
 }
 
-function genarate(arr) {
-  arr.forEach((t) => {
-    set(t);
-  });
-}
+// function genarate(arr) {
+//   arr.forEach((t) => {
+//     set(t);
+//   });
+// }
 
-genarate([
-  {
-    langs: ["./../../input/cn.js", "./../../input/us.js"],
-    excel: "./output/i18n（用户侧）.xlsx",
-  },
-]);
+// genarate([
+//   {
+//     langs: ["./../../input/cn.js", "./../../input/us.js"],
+//     excel: "./output/i18n（用户侧）.xlsx",
+//   },
+// ]);
+
+module.exports = set;
