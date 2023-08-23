@@ -11,18 +11,18 @@
 const CryptoJS = require("crypto-js");
 var request = require("request");
 var log = require("log4node");
-
 // 系统配置
-const config = {
+
+let config = {
   // 请求地址
   hostUrl: "https://itrans.xfyun.cn/v2/its",
   host: "itrans.xfyun.cn",
-  //在控制台-我的应用-机器翻译获取
-  appid: "31859d6a",
-  //在控制台-我的应用-机器翻译获取
-  apiSecret: "ZTE4Nzg4ODA2NGViMzUzMzhlM2I1M2Rl",
-  //在控制台-我的应用-机器翻译获取
-  apiKey: "91d715fcd9934ca7e3e3d46b88da454c",
+  // //在控制台-我的应用-机器翻译获取
+  // appid: tranlateConfig.appid,
+  // //在控制台-我的应用-机器翻译获取
+  // apiSecret: tranlateConfig.apiSecret,
+  // //在控制台-我的应用-机器翻译获取
+  // apiKey: tranlateConfig.apiKey,
   uri: "/v2/its",
 };
 
@@ -55,6 +55,12 @@ function transVar(text, from, to) {
   return options;
 }
 
+function initConfig(translateConfig) {
+  config = {
+    ...config,
+    ...translateConfig,
+  };
+}
 function translator(text, from, to) {
   return new Promise((resolve, reject) => {
     request.post(transVar(text, from, to), (err, resp, body) => {
@@ -107,5 +113,7 @@ function getAuthStr(date, digest) {
   let authorizationOrigin = `api_key="${config.apiKey}", algorithm="hmac-sha256", headers="host date request-line digest", signature="${signature}"`;
   return authorizationOrigin;
 }
-
-module.exports = translator;
+module.exports = {
+  initConfig,
+  translator,
+};

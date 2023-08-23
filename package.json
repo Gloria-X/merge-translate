@@ -6,7 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["i18n", "merge","translate", "xunfei"],
+  "keywords": [
+    "i18n",
+    "merge",
+    "translate",
+    "xunfei"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -16,5 +21,8 @@
     "node-xlsx": "^0.23.0",
     "request": "^2.88.2",
     "xlsx": "^0.18.5"
+  },
+  "dependencies": {
+    "require": "^2.4.20"
   }
 }

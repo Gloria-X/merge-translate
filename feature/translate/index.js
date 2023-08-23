@@ -1,7 +1,6 @@
 const fs = require("fs");
 const ExcelJS = require("exceljs");
-const translator = require("./xunfei_translator");
-
+const { translator, initConfig } = require("./xunfei_translator");
 // 数据打平
 function flattenObject(obj) {
   const toReturn = {};
@@ -21,14 +20,6 @@ function flattenObject(obj) {
     }
   }
   return toReturn;
-}
-
-// name => ../../input/[xxxx].js 永远是这种格式，方便取name
-function getFileName(name) {
-  // const reg = /\.\/(.*?)\.js$/;
-  const reg = /\/([^/]+)\.js$/;
-  reg.test(name);
-  return RegExp.$1;
 }
 
 // 翻译
@@ -55,10 +46,13 @@ async function trans(allLangs, text, from, to) {
 }
 
 // 确定了columns 和第一列 key
-async function set(lang, from, to, tranlateConfig) {
+async function translate(lang, from, to, tranlateConfig) {
   if (!tranlateConfig) {
     throw new Error("配置讯飞机器翻译应用配置");
   }
+
+  initConfig(tranlateConfig);
+
   const keys = []; // 基准key
   const headers = [{ header: "key", width: 35 }]; // 第一行第一列（固定）
   const pushHeaders = []; // 第一行其余列（不确定）
@@ -126,17 +120,4 @@ async function set(lang, from, to, tranlateConfig) {
   }
   workbook.xlsx.writeFile("./output/transRes.xlsx");
 }
-//   );
-// }
-
-// genarate(
-//   [
-//     {
-//       langs: ["./../../input/cn.js"],
-//       excel: "./output/transRes.xlsx",
-//     },
-//   ],
-//   "cn",
-//   "en"
-// );
-module.exports = set;
+module.exports = translate;
