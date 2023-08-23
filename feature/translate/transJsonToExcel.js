@@ -55,7 +55,10 @@ async function trans(allLangs, text, from, to) {
 }
 
 // 确定了columns 和第一列 key
-async function set(lang, from, to) {
+async function set(lang, from, to, tranlateConfig) {
+  if (!tranlateConfig) {
+    throw new Error("配置讯飞机器翻译应用配置");
+  }
   const keys = []; // 基准key
   const headers = [{ header: "key", width: 35 }]; // 第一行第一列（固定）
   const pushHeaders = []; // 第一行其余列（不确定）
@@ -63,14 +66,13 @@ async function set(lang, from, to) {
   // lang.forEach(async (t) => {
   const cur = require(lang); // 文件内容 kv对象
   const obj = flattenObject(cur); // 打平后的kv对象
-  const name = getFileName(lang); // 文件名称 用来当列头名字 cn us jp
   // 默认用首个文件的key
   if (keys.length === 0) {
     keys.push(...Object.keys(obj)); // [k1, k2, k3, ...]
   }
 
-  allLangs[name] = obj; // obj打平后
-  await trans(allLangs, allLangs[name], from, to);
+  allLangs[from] = obj; // obj打平后
+  await trans(allLangs, allLangs[from], from, to);
   // console.log("--------", allLangs);
 
   // 第一列为key，第二列开始列名从allLangs中取
