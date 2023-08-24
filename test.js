@@ -1,5 +1,6 @@
 // const { translate, merge } = require("./index.js");
 const { translate, merge } = require(".");
+
 // translate("./../../input/cn.js", "cn", ["en", "ru", "fr"], {
 //   appid: "31859d6a",
 //   apiSecret: "ZTE4Nzg4ODA2NGViMzUzMzhlM2I1M2Rl",
