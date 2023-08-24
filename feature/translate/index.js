@@ -39,14 +39,14 @@ async function trans(allLangs, text, from, to) {
         console.log(error);
       }
     }
-    // console.log("翻译完成结果==> ", res);
-    // console.log("失败数据 ===>", errKey);
+    console.log("翻译完成条数==> ", Object.keys(res).length);
+    console.log("失败数据 ===>", errKey);
     allLangs[t] = res;
   }
 }
 
 // 确定了columns 和第一列 key
-async function translate(lang, from, to, tranlateConfig) {
+async function translate(text, from, to, tranlateConfig) {
   if (!tranlateConfig) {
     throw new Error("配置讯飞机器翻译应用配置");
   }
@@ -57,8 +57,7 @@ async function translate(lang, from, to, tranlateConfig) {
   const headers = [{ header: "key", width: 35 }]; // 第一行第一列（固定）
   const pushHeaders = []; // 第一行其余列（不确定）
   const allLangs = {};
-  // lang.forEach(async (t) => {
-  const cur = require(lang); // 文件内容 kv对象
+  const cur = require(text); // 文件内容 kv对象
   const obj = flattenObject(cur); // 打平后的kv对象
   // 默认用首个文件的key
   if (keys.length === 0) {
@@ -67,7 +66,6 @@ async function translate(lang, from, to, tranlateConfig) {
 
   allLangs[from] = obj; // obj打平后
   await trans(allLangs, allLangs[from], from, to);
-  // console.log("--------", allLangs);
 
   // 第一列为key，第二列开始列名从allLangs中取
   for (let i = 0; i < Object.keys(allLangs).length; i++) {
@@ -78,12 +76,7 @@ async function translate(lang, from, to, tranlateConfig) {
   const result = keys.map((t) => [t]);
   // [[a],[b],[c]]
   pushHeaders.forEach((t) => {
-    // 之前 pushHeaders = [{cn}, {us}, ...]
     const data = allLangs[t.header]; // 找对应列
-    // t.header = cn
-    // {
-    //   'ax'.'b':'kkk'
-    // }
 
     // 之前 result = [[k1],[k2],[k3]]
     result.forEach((tt) => {
@@ -96,11 +89,12 @@ async function translate(lang, from, to, tranlateConfig) {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("My Sheet");
 
-  // [cn,en]
+  // [cn,en,...]
   worksheet.columns = [
     ...headers,
     ...pushHeaders,
-    { header: "不要改这一行！！", width: 35 },
+    // 若有业务对接需求可加 ↓
+    // { header: "不要改这一行！！", width: 35 },
   ];
   worksheet.addRows(result);
 

@@ -41,7 +41,7 @@ function plus(og, newOg) {
   return ogPlus;
 }
 
-function gen(langs) {
+function merge(langs) {
   const keys = []; // 基准key
   const headers = [{ header: "key", width: 35 }]; // 第一行第一列（固定）
   const pushHeaders = []; // 第一行其余列（不确定）
@@ -93,7 +93,8 @@ function gen(langs) {
   worksheet.columns = [
     ...headers,
     ...pushHeaders,
-    { header: "不要改这一行！！", width: 35 },
+    // 视业务情况而定是否需要 ↓
+    // { header: "不要改这一行！！", width: 35 },
   ];
   worksheet.addRows(result);
 
@@ -113,4 +114,4 @@ function gen(langs) {
   }
   workbook.xlsx.writeFile("./output/i18n（用户侧）.xlsx");
 }
-module.exports = { gen };
+module.exports = { merge };
