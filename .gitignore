@@ -1,5 +1,4 @@
 node_modules/
 output/
-input/cn.js
-input/us.js
+input/
 test.js
