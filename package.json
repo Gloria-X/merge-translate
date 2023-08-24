@@ -1,11 +1,17 @@
 {
-  "name": "merge-translate",
-  "version": "1.0.0",
+  "name": "i18n-merge-translate",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "push": "pnpm publish --no-git-checks"
   },
+  "files": [
+    "feature",
+    "package.json",
+    "README.md",
+    "index.js"
+  ],
   "keywords": [
     "i18n",
     "merge",
