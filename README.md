@@ -140,4 +140,5 @@ module.exports = {
 
 # TODO
 1. 转ts，配置打包压缩(tsconfig.json 相关知识)
-2. 修改pnpm push 脚本，使其能够调用时自动升级版本号并push 到 npm （release-it)
+https://github.com/NickBoomBoom/Utils/blob/master/package.json + tsconfig.json
+2. 修改pnpm push 脚本，使其能够调用时自动升级版本号并push 到 npm (release-it)
